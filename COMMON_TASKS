@@ -1,0 +1,12 @@
+Common tasks
+============
+This is an overview of commonly used tasks that can be copy and pasted into
+the terminal.
+For the commands to work, the project root directory has to be the
+current working directory!
+
+Collection
+----------
+.\vendor\taskfile\bin\task.exe poetry-build
+
+.\vendor\taskfile\bin\task.exe copy-pymol-python-sources

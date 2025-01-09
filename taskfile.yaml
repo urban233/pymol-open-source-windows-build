@@ -1,0 +1,91 @@
+version: '3'
+
+tasks:
+  setup-build-env:
+    desc: "Sets up the entire build environment so that it is possible to run pip install ."
+    cmds:
+      - task: setup-vendor-folder
+      - task: setup-python-venv
+
+  setup-vendor-folder:
+    desc: "Sets up the vendor folder by cloning the PyMOL github repo."
+    cmds:
+      - git clone https://github.com/schrodinger/pymol-open-source.git ./vendor/pymol-open-source
+      - task: checkout-latest-stable-pymol-commit
+
+  # Some commits break the build process therefore a specific commit has to be checked out
+  checkout-latest-stable-pymol-commit:
+    dir: .\vendor\pymol-open-source
+    cmds:
+      git checkout 0313aeba9d75f464e4dddccc3bdbee71a5afb049
+
+  check-python-version:
+    desc: "Check if the system Python version is 3.11.x"
+    cmds:
+      - python --version
+      - |
+        python -c "import sys; assert sys.version_info[:2] == (3, 11), 'Python 3.11.x is not installed'" || (
+          echo "Python 3.11.x is not installed. Please install it." && exit 1
+        )
+
+  setup-python-venv:
+    desc: Installs all packages needed for the virtual environment in src/main/python
+    cmds:
+      - task: check-python-version
+      - powershell -Command "python -m venv .venv"
+      - powershell -Command ".venv/Scripts/pip.exe install numpy==1.26.4"
+
+  setup-poetry-project:
+    desc: "Uses the poetry executable to setup a fresh poetry project called pymol."
+    cmds:
+      - task: check-poetry-installation
+      - cmd /c ".\.venv\Scripts\poetry.exe new pymol"
+      # Delete all files automatically created by poetry
+      - cmd /c "if exist .\pymol\pymol rmdir /s /q .\pymol\pymol"
+      - cmd /c "if exist .\pymol\tests rmdir /s /q .\pymol\tests"
+      - cmd /c "if exist .\pymol\pyproject.toml del .\pymol\pyproject.toml"
+      - cmd /c "if exist .\pymol\README.md del .\pymol\README.md"
+      # Copy PyMOL python sources and the custom pyproject.toml
+      - task: copy-pymol-python-sources
+      - cmd /c "copy .\pyproject.toml .\pymol\pyproject.toml"
+
+  copy-pymol-python-sources:
+    desc: "Copies all python files required for the wheel file."
+    cmds:
+      - cmd /c "xcopy .\vendor\pymol-open-source\modules .\pymol  /e /h /c /i /y"
+      - cmd /c "xcopy .\vendor\pymol-open-source\data .\pymol\pymol\data  /e /h /c /i /y"
+      - cmd /c "copy .\vendor\pymol-open-source\README.md .\pymol\README.md"
+      - cmd /c "copy .\vendor\pymol-open-source\LICENSE .\pymol\LICENSE"
+
+  setup-unstable-build-folder:
+    desc: "Sets up the unstable build folder."
+    cmds:
+      - cmd /c "if not exist .\.unstable_build\vendor mkdir .\.unstable_build\vendor"
+      - cmd /c "if not exist .\.unstable_build\includes mkdir .\.unstable_build\includes"
+      - cmd /c "if not exist .\.unstable_build\libx64 mkdir .\.unstable_build\libx64"
+      - git clone https://github.com/schrodinger/pymol-open-source.git ./.unstable_build/vendor/pymol-open-source
+      - cmd /c "xcopy .\includes .\.unstable_build\includes  /e /h /c /i"
+      - cmd /c "xcopy .\libx64 .\.unstable_build\libx64  /e /h /c /i"
+      - cmd /c "copy .\meson.build .\.unstable_build\meson.build"
+      - task: check-python-version
+      - powershell -Command "python -m venv .\.unstable_build\.venv"
+      - powershell -Command ".\.unstable_build\.venv\Scripts\pip.exe install numpy==1.26.4"
+
+  get-latest-pymol-commit:
+    dir: .\.unstable_build\vendor\pymol-open-source
+    cmds:
+      - git pull
+
+  poetry-build:
+    dir: .\pymol
+    desc: "Builds the poetry project with pre-built tasks."
+    cmds:
+      - task: check-poetry-installation
+      - cmd /c "..\.venv\Scripts\poetry.exe build"
+      - cmd /c "if exist ..\dist rmdir /s /q ..\dist"
+      - cmd /c "xcopy .\dist ..\dist  /e /h /c /i"
+      - cmd /c "if exist .\dist rmdir /s /q .\dist"
+
+  # Checks if poetry is installed in the .venv under the root directory
+  check-poetry-installation:
+    - cmd /c "if not exist .\.venv\Scripts\poetry.exe echo ERROR Unable to find poetry.exe in .venv\Scripts! Check if it's installed."

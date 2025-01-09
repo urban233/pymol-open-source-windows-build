@@ -1,0 +1,47 @@
+[project]
+name = "pymol"
+readme = "README.md"
+requires-python = ">=3.11"
+version = "0.1.0"
+license = {file = "LICENSE"}
+description = """
+PyMOL is a Python-enhanced molecular graphics tool.
+It excels at 3D visualization of proteins, small molecules, density,
+surfaces, and trajectories. It also includes molecular editing,
+ray tracing, and movies. Open Source PyMOL is free to everyone!
+"""
+authors = [
+    {name = "Schrodinger", email = "pymol-users@lists.sourceforge.net"},
+    {name = "Martin Urban",email = "martin.urban@studmail.w-hs.de"}
+]
+requires = [
+    "numpy>=1.26.4,<2"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [
+    { include = "chempy" },
+    { include = "pmg_qt" },
+    { include = "pmg_tk" },
+    { include = "pymol" },
+    { include = "pymol2" },
+    { include = "web" },
+]
+include = ["pymol/_cmd.cp311-win_amd64.pyd"]
+
+[project.urls]
+Homepage = "https://pymol.org"
+Documentation = "https://pymol.org/dokuwiki"
+Repository = "https://github.com/schrodinger/pymol-open-source"
+"Bug Tracker" = "https://github.com/schrodinger/pymol-open-source/issues"
+Changelog = "https://github.com/schrodinger/pymol-open-source/blob/master/ChangeLog"
+
+[project.scripts]
+pymol = "pymol:launch"
+
+# [tool.setuptools.package-data]  TODO: Sub this with the poetry equivalent
+# pmg_qt = ["forms/*.ui"]

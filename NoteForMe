@@ -1,0 +1,6 @@
+
+For building PyMOL the commit with the hash:
+0313aeba9d75f464e4dddccc3bdbee71a5afb049 is used.
+
+The commit with the hash: 2d132b7c1eb60a87dfaf70e81fb9bc2101ada661
+does not compile because of a linking error.
