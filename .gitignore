@@ -173,3 +173,12 @@ cython_debug/
 # Custom excludes
 /vendor/pymol-open-source/
 /pymol/
+/alternative_design/convert_to_ico/logo-16.png
+/alternative_design/convert_to_ico/logo-32.png
+/alternative_design/convert_to_ico/logo-48.png
+/alternative_design/convert_to_ico/logo-64.png
+/alternative_design/convert_to_ico/logo-128.png
+/alternative_design/convert_to_ico/logo-256.png
+/alternative_design/convert_to_ico/logo.ico
+/includes/pymol/
+/includes/tnt/

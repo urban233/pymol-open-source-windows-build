@@ -12,12 +12,13 @@ tasks:
     cmds:
       - git clone https://github.com/schrodinger/pymol-open-source.git ./vendor/pymol-open-source
       - task: checkout-latest-stable-pymol-commit
+      - cmd /c "xcopy .\vendor\pymol-open-source\include .\includes  /e /h /c /i /y"
 
   # Some commits break the build process therefore a specific commit has to be checked out
   checkout-latest-stable-pymol-commit:
     dir: .\vendor\pymol-open-source
     cmds:
-      git checkout 0313aeba9d75f464e4dddccc3bdbee71a5afb049
+      - git checkout 0313aeba9d75f464e4dddccc3bdbee71a5afb049
 
   check-python-version:
     desc: "Check if the system Python version is 3.11.x"
@@ -56,6 +57,10 @@ tasks:
       - cmd /c "xcopy .\vendor\pymol-open-source\data .\pymol\pymol\data  /e /h /c /i /y"
       - cmd /c "copy .\vendor\pymol-open-source\README.md .\pymol\README.md"
       - cmd /c "copy .\vendor\pymol-open-source\LICENSE .\pymol\LICENSE"
+      - cmd /c "copy .\edited\pymol\__init__.py .\pymol\pymol\__init__.py"
+      - cmd /c "copy .\edited\pmg_qt\pymol_qt_gui.py .\pymol\pmg_qt\pymol_qt_gui.py"
+      - cmd /c "copy .\alternative_design\splash.png .\pymol\pymol\data\pymol\splash.png"
+      - cmd /c "copy .\alternative_design\logo.png .\pymol\pymol\data\pymol\icons\alt_logo.png"
 
   setup-unstable-build-folder:
     desc: "Sets up the unstable build folder."
@@ -89,3 +94,15 @@ tasks:
   # Checks if poetry is installed in the .venv under the root directory
   check-poetry-installation:
     - cmd /c "if not exist .\.venv\Scripts\poetry.exe echo ERROR Unable to find poetry.exe in .venv\Scripts! Check if it's installed."
+
+  build-pymol-exe:
+    desc: "Builds PyMOL as .exe file"
+    dir: .\pymol
+    cmds:
+      - cmd /c "..\.venv\Scripts\python.exe .\freezing.py"
+
+  create-alt-ico:
+    desc: "Creates the alternative Windows icon file for the .exe file."
+    cmds:
+      - cmd /c ".\scripts\convert_pymol_png_to_ico.bat"
+      - cmd /c "copy .\alternative_design\convert_to_ico\logo.ico .\alternative_design\logo.ico"
