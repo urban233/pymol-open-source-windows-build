@@ -49,6 +49,7 @@ tasks:
       # Copy PyMOL python sources and the custom pyproject.toml
       - task: copy-pymol-python-sources
       - cmd /c "copy .\pyproject.toml .\pymol\pyproject.toml"
+      - cmd /c "copy .\scripts\python\build_win_exe.py .\pymol\build_win_exe.py"
 
   copy-pymol-python-sources:
     desc: "Copies all python files required for the wheel file."
@@ -99,7 +100,7 @@ tasks:
     desc: "Builds PyMOL as .exe file"
     dir: .\pymol
     cmds:
-      - cmd /c "..\.venv\Scripts\python.exe .\freezing.py"
+      - cmd /c "..\.venv\Scripts\python.exe .\build_win_exe.py"
 
   create-alt-ico:
     desc: "Creates the alternative Windows icon file for the .exe file."
