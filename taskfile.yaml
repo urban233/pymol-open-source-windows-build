@@ -7,18 +7,10 @@ tasks:
   setup-build-env:
     desc: "Sets up the entire build environment so that it is possible to run pip install ."
     cmds:
-      - task: setup-vendor-folder
       - task: setup-python-venv
+      - task: setup-vendor-folder
       - task: meson-setup
       - task: setup-poetry-project
-
-  setup-vendor-folder:
-    desc: "Sets up the vendor folder by cloning the PyMOL github repo."
-    cmds:
-      - git clone https://github.com/schrodinger/pymol-open-source.git ./vendor/pymol-open-source
-      - task: checkout-latest-stable-pymol-commit
-      - cmd /c "xcopy .\vendor\pymol-open-source\include .\includes  /e /h /c /i /y"
-      - cmd /c "..\.venv\Scripts\python.exe .\scripts\python\create_generated_files.py"
 
   setup-python-venv:
     desc: "Installs all packages needed for the virtual environment in src/main/python"
@@ -27,6 +19,14 @@ tasks:
       - powershell -Command "python -m venv .venv"
       - powershell -Command ".venv/Scripts/pip.exe install numpy==1.26.4"
       - powershell -Command ".venv/Scripts/pip.exe install cx_Freeze==7.2.8 poetry==2.0.0 PyQt5==5.15.11 meson ninja"
+
+  setup-vendor-folder:
+    desc: "Sets up the vendor folder by cloning the PyMOL github repo."
+    cmds:
+      - git clone https://github.com/schrodinger/pymol-open-source.git ./vendor/pymol-open-source
+      - task: checkout-latest-stable-pymol-commit
+      - cmd /c "xcopy .\vendor\pymol-open-source\include .\includes  /e /h /c /i /y"
+      - cmd /c ".\.venv\Scripts\python.exe .\scripts\python\create_generated_files.py"
 
   setup-poetry-project:
     desc: "Uses the poetry executable to setup a fresh poetry project called pymol."
