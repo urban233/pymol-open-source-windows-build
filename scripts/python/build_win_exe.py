@@ -45,10 +45,18 @@ if __name__ == '__main__':
   freezer.freeze()
   with zipfile.ZipFile(pathlib.Path(f"{FILE_ROOT_PATH}/build/exe.win-amd64-3.11/lib/library.zip"), 'r') as zip_ref:
     zip_ref.extractall(pathlib.Path(f"{FILE_ROOT_PATH}/build/exe.win-amd64-3.11/lib"))
-  shutil.copy(
-    pathlib.Path(FILE_ROOT_PATH.parent / "buildDir" / "_cmd.cp311-win_amd64.pyd"),
-    pathlib.Path(FILE_ROOT_PATH / "build/exe.win-amd64-3.11/lib/pymol" / "_cmd.cp311-win_amd64.pyd")
-  )
+  _CMD_FROM_BUILD_DIR = pathlib.Path(FILE_ROOT_PATH.parent / "buildDir" / "_cmd.cp311-win_amd64.pyd")
+  _CMD_FROM_PRE_BUILT_DIR = pathlib.Path(FILE_ROOT_PATH.parent / "pre-built" / "_cmd.cp311-win_amd64.pyd")
+  if _CMD_FROM_BUILD_DIR.exists():
+    shutil.copy(
+      _CMD_FROM_BUILD_DIR,
+      pathlib.Path(FILE_ROOT_PATH / "build/exe.win-amd64-3.11/lib/pymol" / "_cmd.cp311-win_amd64.pyd")
+    )
+  else:
+    shutil.copy(
+      _CMD_FROM_PRE_BUILT_DIR,
+      pathlib.Path(FILE_ROOT_PATH / "build/exe.win-amd64-3.11/lib/pymol" / "_cmd.cp311-win_amd64.pyd")
+    )
   remove_dist_info_folders(pathlib.Path(FILE_ROOT_PATH / "build/exe.win-amd64-3.11/lib"))
   shutil.copytree(
     str(pathlib.Path(FILE_ROOT_PATH / "pymol/wizard")),

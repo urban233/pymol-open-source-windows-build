@@ -79,6 +79,7 @@ tasks:
   ######################################################################
   meson-build:
     desc: "Builds the meson project."
+
     cmds:
       - cmd /c ".\.venv\Scripts\meson.exe compile -j 10"
 
@@ -96,6 +97,7 @@ tasks:
     desc: "Builds PyMOL as .exe file"
     dir: .\pymol
     cmds:
+      - cmd /c "copy ..\scripts\python\build_win_exe .\build_win_exe.py"
       - cmd /c "..\.venv\Scripts\python.exe .\build_win_exe.py"
 
   build-all:
