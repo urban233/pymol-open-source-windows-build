@@ -1,11 +1,16 @@
 version: '3'
 
 tasks:
+  ######################################################################
+  # Setup tasks
+  ######################################################################
   setup-build-env:
     desc: "Sets up the entire build environment so that it is possible to run pip install ."
     cmds:
       - task: setup-vendor-folder
       - task: setup-python-venv
+      - task: meson-setup
+      - task: setup-poetry-project
 
   setup-vendor-folder:
     desc: "Sets up the vendor folder by cloning the PyMOL github repo."
@@ -13,28 +18,15 @@ tasks:
       - git clone https://github.com/schrodinger/pymol-open-source.git ./vendor/pymol-open-source
       - task: checkout-latest-stable-pymol-commit
       - cmd /c "xcopy .\vendor\pymol-open-source\include .\includes  /e /h /c /i /y"
-
-  # Some commits break the build process therefore a specific commit has to be checked out
-  checkout-latest-stable-pymol-commit:
-    dir: .\vendor\pymol-open-source
-    cmds:
-      - git checkout 0313aeba9d75f464e4dddccc3bdbee71a5afb049
-
-  check-python-version:
-    desc: "Check if the system Python version is 3.11.x"
-    cmds:
-      - python --version
-      - |
-        python -c "import sys; assert sys.version_info[:2] == (3, 11), 'Python 3.11.x is not installed'" || (
-          echo "Python 3.11.x is not installed. Please install it." && exit 1
-        )
+      - cmd /c "..\.venv\Scripts\python.exe .\scripts\python\create_generated_files.py"
 
   setup-python-venv:
-    desc: Installs all packages needed for the virtual environment in src/main/python
+    desc: "Installs all packages needed for the virtual environment in src/main/python"
     cmds:
       - task: check-python-version
       - powershell -Command "python -m venv .venv"
       - powershell -Command ".venv/Scripts/pip.exe install numpy==1.26.4"
+      - powershell -Command ".venv/Scripts/pip.exe install cx_Freeze==7.2.8 poetry==2.0.0 PyQt5==5.15.11 meson ninja"
 
   setup-poetry-project:
     desc: "Uses the poetry executable to setup a fresh poetry project called pymol."
@@ -46,7 +38,7 @@ tasks:
       - cmd /c "if exist .\pymol\tests rmdir /s /q .\pymol\tests"
       - cmd /c "if exist .\pymol\pyproject.toml del .\pymol\pyproject.toml"
       - cmd /c "if exist .\pymol\README.md del .\pymol\README.md"
-      # Copy PyMOL python sources and the custom pyproject.toml
+      # Copy PyMOL python sources, the custom pyproject.toml and the build_win_exe.py
       - task: copy-pymol-python-sources
       - cmd /c "copy .\pyproject.toml .\pymol\pyproject.toml"
       - cmd /c "copy .\scripts\python\build_win_exe.py .\pymol\build_win_exe.py"
@@ -77,10 +69,18 @@ tasks:
       - powershell -Command "python -m venv .\.unstable_build\.venv"
       - powershell -Command ".\.unstable_build\.venv\Scripts\pip.exe install numpy==1.26.4"
 
-  get-latest-pymol-commit:
-    dir: .\.unstable_build\vendor\pymol-open-source
+  meson-setup:
+    desc: "Sets up the meson project and buildDir folder."
     cmds:
-      - git pull
+      - cmd /c ".\.venv\Scripts\meson.exe setup buildDir --buildtype=release --backend=vs2022"
+
+  ######################################################################
+  # Build tasks
+  ######################################################################
+  meson-build:
+    desc: "Builds the meson project."
+    cmds:
+      - cmd /c ".\.venv\Scripts\meson.exe compile -j 10"
 
   poetry-build:
     dir: .\pymol
@@ -92,18 +92,52 @@ tasks:
       - cmd /c "xcopy .\dist ..\dist  /e /h /c /i"
       - cmd /c "if exist .\dist rmdir /s /q .\dist"
 
-  # Checks if poetry is installed in the .venv under the root directory
-  check-poetry-installation:
-    - cmd /c "if not exist .\.venv\Scripts\poetry.exe echo ERROR Unable to find poetry.exe in .venv\Scripts! Check if it's installed."
-
   build-pymol-exe:
     desc: "Builds PyMOL as .exe file"
     dir: .\pymol
     cmds:
       - cmd /c "..\.venv\Scripts\python.exe .\build_win_exe.py"
 
+  build-all:
+    desc: "Builds all targets: the _cmd extension module the Python wheel file and the cx_freeze .exe file."
+    cmds:
+      - task: meson-build
+      - task: poetry-build
+      - task: build-pymol-exe
+
+  ######################################################################
+  # Extra tasks
+  ######################################################################
+  checkout-latest-stable-pymol-commit:
+    # Some commits break the build process therefore
+    # a specific commit has to be checked out
+    dir: .\vendor\pymol-open-source
+    cmds:
+      - git checkout 0313aeba9d75f464e4dddccc3bdbee71a5afb049
+
+  get-latest-pymol-commit:
+    dir: .\.unstable_build\vendor\pymol-open-source
+    cmds:
+      - git pull
+
   create-alt-ico:
     desc: "Creates the alternative Windows icon file for the .exe file."
     cmds:
       - cmd /c ".\scripts\convert_pymol_png_to_ico.bat"
       - cmd /c "copy .\alternative_design\convert_to_ico\logo.ico .\alternative_design\logo.ico"
+
+  ######################################################################
+  # Check tasks
+  ######################################################################
+  check-python-version:
+    desc: "Check if the system Python version is 3.11.x"
+    cmds:
+      - python --version
+      - |
+        python -c "import sys; assert sys.version_info[:2] == (3, 11), 'Python 3.11.x is not installed'" || (
+          echo "Python 3.11.x is not installed. Please install it." && exit 1
+        )
+
+  # Checks if poetry is installed in the .venv under the root directory
+  check-poetry-installation:
+    - cmd /c "if not exist .\.venv\Scripts\poetry.exe echo ERROR Unable to find poetry.exe in .venv\Scripts! Check if it's installed."

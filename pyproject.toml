@@ -14,9 +14,9 @@ authors = [
     {name = "Schrodinger", email = "pymol-users@lists.sourceforge.net"},
     {name = "Martin Urban",email = "martin.urban@studmail.w-hs.de"}
 ]
-requires = [
-    "numpy>=1.26.4,<2"
-]
+#requires = [
+#    "numpy>=1.26.4,<2"
+#]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -33,6 +33,10 @@ packages = [
 ]
 include = ["pymol/_cmd.cp311-win_amd64.pyd"]
 
+[tool.cxfreeze.build_exe]
+excludes = ["tkinter", "unittest"]
+zip_include_packages = ["PyQt5"]
+
 [project.urls]
 Homepage = "https://pymol.org"
 Documentation = "https://pymol.org/dokuwiki"
@@ -42,6 +46,3 @@ Changelog = "https://github.com/schrodinger/pymol-open-source/blob/master/Change
 
 [project.scripts]
 pymol = "pymol:launch"
-
-# [tool.setuptools.package-data]  TODO: Sub this with the poetry equivalent
-# pmg_qt = ["forms/*.ui"]
