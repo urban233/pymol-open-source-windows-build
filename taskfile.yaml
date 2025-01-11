@@ -88,6 +88,9 @@ tasks:
     desc: "Builds the poetry project with pre-built tasks."
     cmds:
       - task: check-poetry-installation
+      # This should be changed so that the _cmd module gets only copied a single time!
+      - cmd /c "copy ..\pre-built\_cmd.cp311-win_amd64.pyd .\pymol\_cmd.cp311-win_amd64.pyd"
+      - cmd /c "if exist ..\buildDir\_cmd.cp311-win_amd64.pyd copy ..\buildDir\_cmd.cp311-win_amd64.pyd .\pymol\_cmd.cp311-win_amd64.pyd"
       - cmd /c "..\.venv\Scripts\poetry.exe build"
       - cmd /c "if exist ..\dist rmdir /s /q ..\dist"
       - cmd /c "xcopy .\dist ..\dist  /e /h /c /i"
