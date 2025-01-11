@@ -52,6 +52,7 @@ tasks:
       - cmd /c "copy .\vendor\pymol-open-source\LICENSE .\pymol\LICENSE"
       - cmd /c "copy .\edited\pymol\__init__.py .\pymol\pymol\__init__.py"
       - cmd /c "copy .\edited\pmg_qt\pymol_qt_gui.py .\pymol\pmg_qt\pymol_qt_gui.py"
+      - cmd /c "copy .\edited\pymol\data\pymol\base.css .\pymol\pymol\data\pymol\base.css"
       - cmd /c "copy .\alternative_design\splash.png .\pymol\pymol\data\pymol\splash.png"
       - cmd /c "copy .\alternative_design\logo.png .\pymol\pymol\data\pymol\icons\alt_logo.png"
 

@@ -159,8 +159,9 @@ def create_buildinfo(outputdir, pymoldir="."):
 if __name__ == '__main__':
   FILE_ROOT_PATH = pathlib.Path(__file__).parent
   PROJECT_ROOT_PATH = FILE_ROOT_PATH.parent.parent
-  PYMOL_INTERNAL_BUILD_PATH = pathlib.Path(PROJECT_ROOT_PATH / "vendor/pymol-open-source/build")
+  PYMOL_PATH = pathlib.Path(PROJECT_ROOT_PATH / "vendor/pymol-open-source/")
+  PYMOL_INTERNAL_BUILD_PATH = pathlib.Path(PYMOL_PATH / "build")
   if not PYMOL_INTERNAL_BUILD_PATH.exists():
     PYMOL_INTERNAL_BUILD_PATH.mkdir()
   generated_dir = os.path.join(PYMOL_INTERNAL_BUILD_PATH, "generated")
-  create_all(generated_dir)
+  create_all(generated_dir, str(PYMOL_PATH))
