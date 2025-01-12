@@ -19,8 +19,11 @@ inc_dirs = include_directories(
     'vendor/pymol-open-source/build/generated',
     'vendor/pymol-open-source/contrib/uiuc/plugins/molfile_plugin/src',
     '.venv/Lib/site-packages/numpy/core/include',
-    'C:/Users/student/AppData/Local/Programs/Python/Python311/Include'  # TODO: Make this variable!
+    'includes/python'  # TODO: Make this variable! C:/Users/student/AppData/Local/Programs/Python/Python311/Include
 )
+
+python_dll_dir = python.get_install_dir()
+message('Python DLL directory: ' + python_dll_dir)
 
 # Define compiler arguments from ALL_COMP_ARGS
 if meson.get_compiler('cpp').get_id() == 'gcc' or meson.get_compiler('cpp').get_id() == 'clang'
