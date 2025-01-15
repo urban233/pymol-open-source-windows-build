@@ -2,36 +2,22 @@
 name = "pymol"
 readme = "README.md"
 requires-python = ">=3.11"
-version = "0.1.0"
+version = "0.1.3"
 license = {file = "LICENSE"}
-description = """
-PyMOL is a Python-enhanced molecular graphics tool.
-It excels at 3D visualization of proteins, small molecules, density,
-surfaces, and trajectories. It also includes molecular editing,
-ray tracing, and movies. Open Source PyMOL is free to everyone!
-"""
+#description = """
+#PyMOL is a Python-enhanced molecular graphics tool.
+#It excels at 3D visualization of proteins, small molecules, density,
+#surfaces, and trajectories. It also includes molecular editing,
+#ray tracing, and movies. Open Source PyMOL is free to everyone!
+#"""
 authors = [
     {name = "Schrodinger", email = "pymol-users@lists.sourceforge.net"},
     {name = "Martin Urban",email = "martin.urban@studmail.w-hs.de"}
 ]
-#requires = [
-#    "numpy>=1.26.4,<2"
-#]
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry]
-packages = [
-    { include = "chempy" },
-    { include = "pmg_qt" },
-    { include = "pmg_tk" },
-    { include = "pymol" },
-    { include = "pymol2" },
-    { include = "web" },
-]
-include = ["pymol/_cmd.cp311-win_amd64.pyd"]
+requires = ["setuptools", "numpy==1.26.4", "toml"]
+build-backend = "setuptools.build_meta"
 
 [tool.cxfreeze.build_exe]
 excludes = ["tkinter", "unittest"]

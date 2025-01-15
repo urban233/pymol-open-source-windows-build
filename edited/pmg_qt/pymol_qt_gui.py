@@ -1,5 +1,18 @@
 """
-Contains main class for PyMOL QT GUI
+#A* -------------------------------------------------------------------
+#B* This file contains source code for the main class for PyMOL QT GUI
+#C* Copyright 2025 by Schrodinger, Martin Urban.
+#D* -------------------------------------------------------------------
+#E* It is unlawful to modify or remove this copyright notice.
+#F* -------------------------------------------------------------------
+#G* Please see the accompanying LICENSE_Schrodinger file for further information.
+#H* -------------------------------------------------------------------
+#I* Additional authors of this source file include:
+#-* unknown
+#-*
+#J* This file contains added source code by Martin Urban and is indicated
+#-* by # BEGIN EDITED CODE SEGMENT
+#Z* -------------------------------------------------------------------
 """
 import pathlib
 from collections import defaultdict
@@ -413,6 +426,22 @@ PyMOL> color ye<TAB>    (will autocomplete "yellow")
 
         if style:
             self.setStyleSheet(style)
+
+        # BEGIN EDITED CODE SEGMENT
+        # :author Martin Urban
+        css_dir = os.path.expandvars(str(pathlib.Path('$PYMOL_DATA/pymol')))
+        try:
+            with open(
+                    os.path.join(css_dir, 'base.css'),
+                    "r",
+                    encoding="utf-8",
+            ) as file:
+                style = file.read()
+                # Set the stylesheet of the application
+                self.setStyleSheet(style)
+        except Exception as e:
+            print(e)
+        # END EDITED CODE SEGMENT
 
         # Load saved shortcuts on launch
         self.saved_shortcuts = pymol.save_shortcut.load_and_set(self.cmd)

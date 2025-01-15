@@ -1,0 +1,17 @@
+{
+  "name": "cmake-test",
+  "version": "1.0.0",
+  "builtin-baseline": "d7112d1a4fb50410d3639f5f586972591d848beb",
+  "dependencies": [
+    "freetype",
+    "glew",
+    "glm",
+    "libpng",
+    {
+      "name": "libxml2",
+      "default-features": false
+    },
+    "opengl",
+    "netcdf-c"
+  ]
+}

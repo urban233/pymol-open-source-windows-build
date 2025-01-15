@@ -1,3 +1,19 @@
+/*
+#A* -------------------------------------------------------------------
+#B* This file contains source code for the styling PyMOL.
+#C* Copyright 2025 by Schrodinger, Martin Urban.
+#D* -------------------------------------------------------------------
+#E* It is unlawful to modify or remove this copyright notice.
+#F* -------------------------------------------------------------------
+#G* Please see the accompanying LICENSE_Schrodinger file for further information.
+#H* -------------------------------------------------------------------
+#I* Additional authors of this source file include:
+#-* unknown
+#-*
+#J* This file contains added source code by Martin Urban and is indicated
+#-* by /* BEGIN EDITED CODE SEGMENT
+#Z* -------------------------------------------------------------------
+ */
 /* Style for QPushButton with the 'builder' object name */
 #builder QPushButton {
     padding: 1px 3px;
@@ -15,6 +31,9 @@ QMainWindow::separator {
     border: none;
 }
 
+/* BEGIN EDITED CODE SEGMENT
+:author Martin Urban
+*/
 /*<editor-fold desc="QMenu style">*/
 QMenuBar {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f9f9f9, stop:1 #f0f0f0);
@@ -52,3 +71,4 @@ QMenu::separator {
     margin-right: 5px;
 }
 /*</editor-fold>*/
+/* END EDITED CODE SEGMENT */

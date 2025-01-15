@@ -1,4 +1,18 @@
-'''
+"""
+#A* -------------------------------------------------------------------
+#B* This file contains source code for the launching PyMOL.
+#C* Copyright 2025 by Schrodinger, Martin Urban.
+#D* -------------------------------------------------------------------
+#E* It is unlawful to modify or remove this copyright notice.
+#F* -------------------------------------------------------------------
+#G* Please see the accompanying LICENSE_Schrodinger file for further information.
+#H* -------------------------------------------------------------------
+#I* Additional authors of this source file include:
+#-* unknown
+#-*
+#J* This file contains added source code by Martin Urban and is indicated
+#-* by # BEGIN EDITED CODE SEGMENT
+#Z* -------------------------------------------------------------------
 PyMOL Molecular Graphics System
 Copyright (c) Schrodinger, Inc.
 
@@ -31,8 +45,7 @@ Supported ways to launch PyMOL:
     >>> # without GUI
     >>> import pymol
     >>> pymol.finish_launching(['pymol', '-cq'])
-
-'''
+"""
 
 import os
 import sys
