@@ -70,5 +70,5 @@ if __name__ == '__main__':
   )
   shutil.copy(
     str(pathlib.Path(FILE_ROOT_PATH.parent / "alternative_design" / "logo.png")),
-    str(pathlib.Path(FILE_ROOT_PATH / "pymol/data/pymol" / "alt_logo.png"))
+    str(pathlib.Path(FILE_ROOT_PATH / "build/exe.win-amd64-3.11/lib/pymol/data/pymol" / "alt_logo.png"))
   )
