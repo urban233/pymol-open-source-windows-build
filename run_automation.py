@@ -20,11 +20,6 @@ import subprocess
 import shutil
 import sys
 
-import toml
-
-# pyproject_toml = toml.load("pyproject.toml")
-# PROJECT_NAME = pyproject_toml["project"]["name"]
-# PROJECT_VERSION = pyproject_toml["project"]["version"]
 
 PROJECT_ROOT_DIR = pathlib.Path(__file__).parent
 
@@ -130,10 +125,11 @@ def setup_dev_env() -> None:
   # </editor-fold>
   # <editor-fold desc="Setup vcpkg package manager">
   subprocess.run(["git", "clone", "https://github.com/microsoft/vcpkg.git", pathlib.Path("./vendor/vcpkg")])
-  subprocess.run([r".\bootstrap-vcpkg.bat"], cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
-  subprocess.run([r".\bootstrap-vcpkg.bat"], shell=True, cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
+  # subprocess.run([r".\bootstrap-vcpkg.bat"], cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
+  # subprocess.run([r".\bootstrap-vcpkg.bat"], shell=True, cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
+  subprocess.run([pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg" / "bootstrap-vcpkg.bat")], shell=True, cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
   subprocess.run(
-    [f"{pathlib.Path(PROJECT_ROOT_DIR / 'vendor/vcpkg' / 'vcpkg.exe')}", "install", "--triplet=x64-windows-static"],
+    [pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg" / "vcpkg.exe"), "install", "--triplet=x64-windows-static"],
     shell=True
   )
   # </editor-fold>
