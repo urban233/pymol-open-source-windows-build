@@ -115,7 +115,7 @@ class BuildWinExe:
       shutil.rmtree(self.src_path)
     # </editor-fold>
 
-
+# C:\Users\student\github_repos\pymol-open-source-windows-build\vendor\vcpkg\buildtrees\versioning_\versions\vcpkg-pkgconfig-get-modules\6845369c8cb7d3c318e8e3ae92fd2b7570a756ca_22172.tmp
 def setup_dev_env() -> None:
   """Installs the dependencies needed for building the _cmd extension module and the win exe."""
   # <editor-fold desc="Setup pymol-open-source repository">
@@ -125,13 +125,15 @@ def setup_dev_env() -> None:
   # </editor-fold>
   # <editor-fold desc="Setup vcpkg package manager">
   subprocess.run(["git", "clone", "https://github.com/microsoft/vcpkg.git", pathlib.Path("./vendor/vcpkg")])
-  # subprocess.run([r".\bootstrap-vcpkg.bat"], cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
-  # subprocess.run([r".\bootstrap-vcpkg.bat"], shell=True, cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
   subprocess.run([pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg" / "bootstrap-vcpkg.bat")], shell=True, cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
-  subprocess.run(
-    [pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg" / "vcpkg.exe"), "install", "--triplet=x64-windows-static"],
-    shell=True
-  )
+
+  if len(str(pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))) < 200:
+    subprocess.run(
+      [pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg" / "vcpkg.exe"), "install", "--triplet=x64-windows-static"],
+      shell=True
+    )
+  else:
+    print("Warning the path of the vcpkg is too long! The vcpkg.exe cannot be used unless a shorter path is used!")
   # </editor-fold>
 
 
