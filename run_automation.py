@@ -122,7 +122,13 @@ class BuildWinExe:
 
 
 def setup_dev_env() -> None:
-  """Installs the dependencies needed for building the _cmd extension module."""
+  """Installs the dependencies needed for building the _cmd extension module and the win exe."""
+  # <editor-fold desc="Setup pymol-open-source repository">
+  subprocess.run(["git", "clone", "https://github.com/schrodinger/pymol-open-source.git", pathlib.Path("./vendor/pymol-open-source")])
+  subprocess.run(["git", "checkout", "0313aeba9d75f464e4dddccc3bdbee71a5afb049"], cwd=pathlib.Path("./vendor/pymol-open-source"))
+  subprocess.run([pathlib.Path("./.venv/Scripts/python.exe"), pathlib.Path("./scripts/python/create_generated_files.py")])
+  # </editor-fold>
+  # <editor-fold desc="Setup vcpkg package manager">
   subprocess.run(["git", "clone", "https://github.com/microsoft/vcpkg.git", pathlib.Path("./vendor/vcpkg")])
   subprocess.run([r".\bootstrap-vcpkg.bat"], cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
   subprocess.run([r".\bootstrap-vcpkg.bat"], shell=True, cwd=pathlib.Path(PROJECT_ROOT_DIR / "vendor/vcpkg"))
@@ -130,6 +136,7 @@ def setup_dev_env() -> None:
     [f"{pathlib.Path(PROJECT_ROOT_DIR / 'vendor/vcpkg' / 'vcpkg.exe')}", "install", "--triplet=x64-windows-static"],
     shell=True
   )
+  # </editor-fold>
 
 
 def build_win_exe() -> None:
