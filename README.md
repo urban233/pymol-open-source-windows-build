@@ -43,9 +43,11 @@ Feel free to contribute or test the files as needed.
 ## Acknowledgements
 **Schrödinger** for being the driving force behind the continued development of PyMOL after Warren's passing, ensuring that the open-source version remained alive and well. 
 
-**NOTE**: the following list has not been updated since Fall 2003.  
+**NOTE**: the following list has been **created by 
+Warren himself** and has not been updated since Fall 2003.  
+
 Since then, the PyMOL effort has grown to such an extent that it is no longer
-practical to recognize everyone individually.  Fortunately, a public
+practical to recognize everyone individually. Fortunately, a public
 record of participation exists and can be appreciated on the internet,
 and especially via the PyMOL mailing list archives.  Suffice it to say
 that the PyMOL user community now numbers well into the thousands and

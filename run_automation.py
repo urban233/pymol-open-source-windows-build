@@ -22,9 +22,9 @@ import sys
 
 import toml
 
-pyproject_toml = toml.load("pyproject.toml")
-PROJECT_NAME = pyproject_toml["project"]["name"]
-PROJECT_VERSION = pyproject_toml["project"]["version"]
+# pyproject_toml = toml.load("pyproject.toml")
+# PROJECT_NAME = pyproject_toml["project"]["name"]
+# PROJECT_VERSION = pyproject_toml["project"]["version"]
 
 PROJECT_ROOT_DIR = pathlib.Path(__file__).parent
 

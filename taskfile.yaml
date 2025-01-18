@@ -9,7 +9,6 @@ tasks:
     cmds:
       - task: setup-python-venv
       - task: setup-vendor-folder
-      - task: meson-setup
       - task: setup-poetry-project
 
   setup-python-venv:

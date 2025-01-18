@@ -11,7 +11,7 @@ FILE_ROOT_PATH = pathlib.Path(__file__).parent
 executable = Executable(
   script="pymol/__init__.py",  # Replace with your script name
   target_name="Open-Source-PyMOL.exe",  # Optional: Set the name of the .exe file
-  #base="Win32GUI",  # Uncomment to suppress command window
+  base="Win32GUI",  # Uncomment to suppress command window
   icon=pathlib.Path(FILE_ROOT_PATH.parent / "alternative_design" / "logo.ico")
 )
 
@@ -67,4 +67,8 @@ if __name__ == '__main__':
     str(pathlib.Path(FILE_ROOT_PATH / "pymol/data/startup")),
     str(pathlib.Path(FILE_ROOT_PATH / "build/exe.win-amd64-3.11/lib/pymol/data/startup")),
     dirs_exist_ok=True
+  )
+  shutil.copy(
+    str(pathlib.Path(FILE_ROOT_PATH.parent / "alternative_design" / "logo.png")),
+    str(pathlib.Path(FILE_ROOT_PATH / "pymol/data/pymol" / "alt_logo.png"))
   )
