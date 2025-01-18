@@ -34,6 +34,7 @@ DEBUG = False  # Debug flag for not cleaning up certain build files.
 
 
 class CustomInstall(install):
+  """Custom command for running pip install ."""
 
   def copy_pymol_python_sources(self) -> None:
     """Copies the pymol python sources to the src/python directory."""
@@ -49,7 +50,6 @@ class CustomInstall(install):
   def run(self) -> None:
     """Run method that gets executed if pip install is run."""
     self.run_command("build_ext")
-    self.copy_pymol_python_sources()
     super().run()
     if not DEBUG:
       shutil.rmtree(pathlib.Path(PROJECT_ROOT_DIR / "src"))

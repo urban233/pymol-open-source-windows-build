@@ -157,11 +157,25 @@ def clean_install() -> None:
   )
 
 
+def copy_pymol_python_sources() -> None:
+  """Copies the pymol python sources to the src/python directory."""
+  tmp_src_path = pathlib.Path(PROJECT_ROOT_DIR / "src/python")
+  tmp_pymol_python_src_path = pathlib.Path(PROJECT_ROOT_DIR / "vendor/pymol-open-source/modules")
+  if not tmp_src_path.exists():
+    tmp_src_path.mkdir(parents=True)
+  shutil.copytree(
+    tmp_pymol_python_src_path,
+    tmp_src_path,
+    dirs_exist_ok=True
+  )
+
+
 def build_wheel() -> None:
   """Builds the wheel file for the python PyMOL package."""
   # Run the command using subprocess.run
+  copy_pymol_python_sources()
   subprocess.run(
-    [PYTHON_EXECUTABLE, 'setup.py', 'sdist', 'bdist_wheel'],
+    [PYTHON_EXECUTABLE, 'setup.py', 'bdist_wheel'],  # sdist does not create the correct directory hierarchy
     stdout=sys.stdout, stderr=sys.stderr, text=True
   )
 

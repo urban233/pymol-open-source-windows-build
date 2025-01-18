@@ -14,6 +14,11 @@ authors = [
     {name = "Schrodinger", email = "pymol-users@lists.sourceforge.net"},
     {name = "Martin Urban",email = "martin.urban@studmail.w-hs.de"}
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: Microsoft :: Windows"
+]
 
 [build-system]
 requires = ["setuptools", "numpy==1.26.4", "toml"]

@@ -24,7 +24,7 @@ To build the wheel file, follow these steps (the working directory is the reposi
 
 1. Set up the build environment by running:
    ```powershell
-   .\vendor\taskfile\bin\task.exe setup-build-env
+   .\setup_dev_env.bat
    ```
 
 2. Once the environment is set up and **activated**, build the wheel file with:
@@ -36,7 +36,8 @@ To build the wheel file, follow these steps (the working directory is the reposi
     .\.venv\Scripts\python.exe .\run_automation.py build-wheel
     ```
 
-3. After the build process completes, you can find the generated wheel file in the `dist` folder located in the project root.
+3. After the build process completes, you can find the generated wheel file in the `dist` folder located in the project root. 
+(Until now the wheel file has a wrong filename containing _none_ and _any_ but is only for **Windows x64**.)
 
 Feel free to contribute or test the files as needed.
 
